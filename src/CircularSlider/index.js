@@ -80,6 +80,7 @@ const CircularSlider = ({
         renderLabelValue = null,
         children,
         onChange = value => {},
+        transformViewValue = value => value,
     }) => {
     const initialState = {
         mounted: false,
@@ -271,7 +272,7 @@ const CircularSlider = ({
                     appendToValue={appendToValue}
                     prependToValue={prependToValue}
                     hideLabelValue={hideLabelValue}
-                    value={`${state.label}`}
+                    value={`${transformViewValue(state.label)}`}
                 />
             )}
         </div>
@@ -309,7 +310,8 @@ CircularSlider.propTypes = {
     trackSize: PropTypes.number,
     data: PropTypes.array,
     dataIndex: PropTypes.number,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    transformViewValue: PropTypes.func,
 };
 
 export default CircularSlider;
