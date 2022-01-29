@@ -37,7 +37,7 @@ const styles = ({
     circularSlider: {
         position: 'relative',
         display: 'inline-block',
-        opacity: 0,
+        opacity: 1,
         transition: 'opacity 1s ease-in'
     },
 
@@ -48,14 +48,17 @@ const styles = ({
 
 const CircularSlider = ({
         label = 'ANGLE',
+        disabled = false,
         width = 280,
         direction = 1,
         min = 0,
         max = 360,
         knobColor = '#4e63ea',
+        knobDisabledColor = '#B6B6B6',
         knobSize = 36,
         knobPosition = 'top',
         labelColor = '#272b77',
+        labelDisabledColor = '#B6B6B6',
         labelBottom = false,
         labelFontSize = '1rem',
         valueFontSize = '3rem',
@@ -69,6 +72,7 @@ const CircularSlider = ({
         progressColorTo = '#4990E2',
         progressSize = 8,
         trackColor = '#DDDEFB',
+        trackDisableColor = '#e0e0e0',
         trackSize = 8,
         data = [],
         dataIndex = 0,
@@ -155,7 +159,7 @@ const CircularSlider = ({
     };
 
     const onMouseMove = useCallback((event) => {
-        if (!state.isDragging || !knobDraggable) return;
+        if (!state.isDragging || !knobDraggable || disabled) return;
 
         event.preventDefault();
 
@@ -240,7 +244,7 @@ const CircularSlider = ({
                 progressColorFrom={progressColorFrom}
                 progressColorTo={progressColorTo}
                 progressLineCap={progressLineCap}
-                trackColor={trackColor}
+                trackColor={disabled ? trackDisableColor : trackColor}
                 trackSize={trackSize}
                 radiansOffset={state.radians}
             />
@@ -248,7 +252,7 @@ const CircularSlider = ({
                 isDragging={state.isDragging}
                 knobPosition={{ x: state.knob.x, y: state.knob.y }}
                 knobSize={knobSize}
-                knobColor={knobColor}
+                knobColor={disabled ? knobDisabledColor : knobColor}
                 trackSize={trackSize}
                 hideKnob={hideKnob}
                 knobDraggable={knobDraggable}
@@ -259,7 +263,7 @@ const CircularSlider = ({
             {renderLabelValue || (
                 <Labels
                     label={label}
-                    labelColor={labelColor}
+                    labelColor={disabled ? labelDisabledColor : labelColor}
                     labelBottom={labelBottom}
                     labelFontSize={labelFontSize}
                     verticalOffset={verticalOffset}
@@ -276,15 +280,18 @@ const CircularSlider = ({
 
 CircularSlider.propTypes = {
     label: PropTypes.string,
+    disabled: PropTypes.bool,
     width: PropTypes.number,
     direction: PropTypes.number,
     min: PropTypes.number,
     max: PropTypes.number,
     knobColor: PropTypes.string,
+    knobDisabledColor: PropTypes.string,
     knobPosition: PropTypes.string,
     hideKnob: PropTypes.bool,
     knobDraggable: PropTypes.bool,
     labelColor: PropTypes.string,
+    labelDisabledColor: PropTypes.string,
     labelBottom: PropTypes.bool,
     labelFontSize: PropTypes.string,
     valueFontSize: PropTypes.string,
@@ -298,6 +305,7 @@ CircularSlider.propTypes = {
     progressColorTo: PropTypes.string,
     progressSize: PropTypes.number,
     trackColor: PropTypes.string,
+    trackDisableColor: PropTypes.string,
     trackSize: PropTypes.number,
     data: PropTypes.array,
     dataIndex: PropTypes.number,
